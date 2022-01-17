@@ -39,5 +39,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-datepicker": "^4.3.4",
+    "nanoid": "^3.2.0",
+    "react-datepicker": "^4.6.0"
   }
 }
