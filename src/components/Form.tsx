@@ -5,7 +5,6 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import './styles.css';
-import { TodoItem } from "./TodoListItem";
 
 export type FormProps = {
     tags: TagItemType[]
@@ -15,6 +14,14 @@ export type FormProps = {
 export type TagItemType = {
     id: string,
     name: string
+}
+
+export type TodoItem = {
+    title: string,
+    dueDate: Date,
+    tagList: string[],
+    completed: boolean,
+    id: string
 }
 
 export function Form(props: FormProps) {
@@ -31,7 +38,8 @@ export function Form(props: FormProps) {
             title: title, 
             dueDate: date,
             tagList: tags.map(tag => tag.name),
-            completed: false
+            completed: false,
+            id: "todo-" + nanoid()
         } 
         props.addTask(newTask);
 
@@ -43,7 +51,6 @@ export function Form(props: FormProps) {
 
     function handleTagSubmitOnClick() {
         addTags(tagInput);
-        console.log("submitted");
         setTagInput('');
     }
 
