@@ -26,3 +26,21 @@ export function getUniqueFromArray(arr: string[]) {
         return true;
     });
 }
+
+export function dateToString(date: Date) {
+    const monthMap = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ]
+    return monthMap[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+}

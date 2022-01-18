@@ -23,20 +23,20 @@ import { TodoItem } from './Form';
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { MultiSelectFilter } from './MultiSelectFilter';
 
 import { taskCompletedComparator, taskDateComparator, getUniqueFromArray } from '../util';
+import { Option } from 'react-multi-select-component/dist/types/lib/interfaces';
 
 export type TodoListProps = {
   tasks: TodoItem[];
 }
 
-const arr = ['1', '1', '2', '3', '3', '3'];
-console.log(getUniqueFromArray(arr));
-
 export default function TodoList(props: TodoListProps) {
 
   const [tasks, setTasks] = useState<TodoItem[]>(props.tasks);
   const [globalTags, setGlobalTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Option[]>([]);
   const [selections, setSelections] = React.useState<string[]>([]);
 
   const handleSelections = (event: React.MouseEvent<HTMLElement>, newSelections: string[]) => {
@@ -75,7 +75,18 @@ export default function TodoList(props: TodoListProps) {
     setTasks(updatedTasks);
   }  
 
-  const renderTasks = tasks.map((task, idx) => (
+  const filteredTasks = tasks.filter(task => {
+    console.log(selectedTags);
+    console.log(task.tagList);
+    for (let tag of task.tagList) {
+      if (selectedTags.filter(sTag => tag === sTag.value).length === 0) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  const renderTasks = filteredTasks.map((task, idx) => (
     <TodoListItem 
       title={task.title}
       dueDate={task.dueDate}
@@ -86,6 +97,13 @@ export default function TodoList(props: TodoListProps) {
       key={idx}
     />
   ));
+
+  const filterOptions: Option[] = globalTags.map(tag => {
+    return {
+      label: tag,
+      value: tag
+    };
+  });
   
   return (
     <div>
@@ -106,13 +124,17 @@ export default function TodoList(props: TodoListProps) {
           <ToggleButton value="completed" aria-label="completed">
             <h4>Completed</h4>
           </ToggleButton>
-      </ToggleButtonGroup>
+        </ToggleButtonGroup>
       </div>
       
       {/* Filter Buttons */}
       <div>
-        <h3>Filter</h3>
         {/* Dropdown filter */}
+        <MultiSelectFilter
+          options={filterOptions}
+          selected={selectedTags}
+          onChange={setSelectedTags}
+        />
       </div>
       {/* List */}
       <ul>

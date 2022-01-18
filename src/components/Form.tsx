@@ -56,7 +56,7 @@ export function Form(props: FormProps) {
 
     function addTags(tagInput: string | null) {
         if (tagInput === null || tagInput === "") { return; }
-        const newTagStrings = tagInput.split(',');
+        const newTagStrings = tagInput.split(',').map(tag => tag.trim());
         const newTags: TagItemType[] = newTagStrings.map(tagString => {
             return {
                 id: "tag-" + nanoid(),
@@ -90,6 +90,7 @@ export function Form(props: FormProps) {
 
     return (
         <div>
+            <h3>Create Task:</h3>
             <form onSubmit={(e) => handleFormSubmit(e)}>
                 <div>
                     <span><label htmlFor="title-input">Title</label></span>
